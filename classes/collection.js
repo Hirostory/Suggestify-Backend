@@ -1,8 +1,8 @@
 const mongoose = require("mongoose")
 
-const collectionSchema = new mongoose.Schema({
+const collectionNameSchema = new mongoose.Schema({
     user: {
-        type: mongoose.Type.ObjectId,
+        type: mongoose.Types.ObjectId,
         ref: "User"
     },
     name: String,
@@ -18,6 +18,6 @@ const collectionSchema = new mongoose.Schema({
 
 })
 
-const Collection = mongoose.model("Collection", collectionSchema)
+const Collection = mongoose.model("Collection", collectionNameSchema)
 
 module.exports = Collection

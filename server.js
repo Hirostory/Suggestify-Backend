@@ -17,14 +17,23 @@ mongoose.connection
     .on('close', () => console.log('You are disconnected to mongoose'))
     .on('error', (err) => console.log(err))
 
+//importing it to my controller 
+const userController = require("./controllers/users.js")
+const collectionController = require("./controllers/collections.js")
+const recommendationController = require("./controllers/recommendations.js")
 
 //Middleware use
+app.use(express.urlencoded({extended: true}))
 app.use(cors())
 app.use(morgan('dev'))
 app.use(express.json())
+app.use('/user', userController)
+app.use('/collection', collectionController)
+app.use('/recommendation', recommendationController)
 
 app.get("/", (req,res)=>{
     res.send("YAY!")
 })
+
 
 app.listen(PORT, console.log(`Server is listening on http://localhost:${PORT}`))

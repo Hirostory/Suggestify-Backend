@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 const recommendationSchema = new mongoose.Schema({
-    collection: {
+    collectionName: {
         type: mongoose.Types.ObjectId,
         ref: "Collection"
     },
@@ -14,6 +14,6 @@ const recommendationSchema = new mongoose.Schema({
     link: String
 })
 
-const Recommendation = mongoose.model("Recommendation")
+const Recommendation = mongoose.model("Recommendation", recommendationSchema)
 
 module.exports = Recommendation

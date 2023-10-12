@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
     profilePicture: {
         tyoe: String 
     }, 
-    collections: [
+    collectionsName: [
         {
             type: mongoose.Types.ObjectId,
             ref: "Collection"
@@ -27,3 +27,5 @@ const userSchema = new mongoose.Schema({
 })
 
 const User = mongoose.model("User", userSchema)
+
+module.exports = User
