@@ -1,5 +1,6 @@
 const express = require("express") //connecting to express
 const router = express.Router()
+const bcrypt = require('bcrypt')
 
 //connecting to the Schemas to this file 
 const User = require("../classes/user")
@@ -18,7 +19,15 @@ router.get("/", async (req, res) => {
 // USER CREATE ROUTE 
 router.post("/", async (req, res) => {
     try {
-      res.json(await User.create(req.body))
+      const hasedPassword = await bcrypt.hash(req.body.password, bcrypt.genSaltSync(10))
+      const userToCreate = {
+        username: req.body.username,
+        password: hasedPassword
+      }
+
+      const createUser = await User.create(userToCreate)
+      console.log("User is created" + createUser)
+      res.json(createUser)
     } catch (error) {
         res.status(400).json(error)
     }
@@ -27,7 +36,7 @@ router.post("/", async (req, res) => {
 // USER update Route 
 router.put("/:id", async (req, res) => {
     try {
-        res.json(await User.findByIdAndUpdate(req.body.id, req.body, {new: true}))
+        res.json(await User.findByIdAndUpdate(req.params.id, req.body, {new: true}))
     } catch (error) {
         res.status(400).json(error)
     }

@@ -27,7 +27,7 @@ router.post("/", async (req, res) => {
 // Collection update Route 
 router.put("/:id", async (req, res) => {
     try {
-        res.json(await Collection.findByIdAndUpdate(req.body.id, req.body, {new: true}))
+        res.json(await Collection.findByIdAndUpdate(req.params.id, req.body, {new: true}))
     } catch (error) {
         res.status(400).json(error)
     }
