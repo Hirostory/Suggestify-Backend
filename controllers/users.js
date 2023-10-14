@@ -18,7 +18,17 @@ router.get("/", async (req, res) => {
 // USER CREATE ROUTE 
 router.post("/", async (req, res) => {
     try {
-        res.json(await User.create(req.body))
+        req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10))
+        res.json(await User.create(req.body, (err, createdUser) => {
+            if(err){
+                console.log(err);
+                res.json(err.message)
+              } else {
+                console.log('user is created', createdUser);
+                res.json(createdUser)
+              }  
+        }))
+
     } catch (error) {
         res.status(400).json(error)
     }
@@ -31,6 +41,30 @@ router.put("/:id", async (req, res) => {
     } catch (error) {
         res.status(400).json(error)
     }
+})
+
+// route to authenticate user
+router.put('/login', async (req, res) => {
+    console.log(req.body)
+     try {
+
+        res.json( await User.findOne({username: req.body.username}, (err, foundUser) => {
+            if(err) {
+                res.json('Oops, there was an error. Please try again')
+              } else {
+                if(!foundUser){
+                  res.json('Username and password do not match. Please try again.')
+                } else if(bcrypt.compareSync(req.body.password, foundUser.password)) {
+                  res.json({username: foundUser.username})
+                } else {
+                  res.json('Username and password do not match. Please try again.')
+                }
+              }
+        }))
+}
+    catch (error) {
+        res.status(400).json(error)
+   }
 })
 
 // USER DELETE route
