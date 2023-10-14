@@ -18,17 +18,7 @@ router.get("/", async (req, res) => {
 // USER CREATE ROUTE 
 router.post("/", async (req, res) => {
     try {
-        req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10))
-        res.json(await User.create(req.body, (err, createdUser) => {
-            if(err){
-                console.log(err);
-                res.json(err.message)
-              } else {
-                console.log('user is created', createdUser);
-                res.json(createdUser)
-              }  
-        }))
-
+      res.json(await User.create(req.body))
     } catch (error) {
         res.status(400).json(error)
     }
