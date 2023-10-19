@@ -13,17 +13,24 @@ const SECRET_KEY = 'secretkey'
 
 // Routes
 
-// User Create Route
-router.post("/register", async (req, res) => {
-    try {
-      const { username, password } = req.body   
-      const hashedPassword = await bcrypt.hash(password, 10)
-      const newUser = new User({username, password: hashedPassword })
-      await newUser.save()
-      res.status(201).json({ message: 'User Created Successfully' })
-    } catch (error) {
-        res.status(500).json({ error: 'Error Signing Up' })
-    }
+
+// USER Index Route
+router.get("/", async (req, res) => {
+  try {
+      res.json(await User.find({}))
+  } catch (error) {
+      res.status(400).json(error)
+  }
+})
+
+//USER Show Route
+router.get("/:id", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).populate("collectionsName")
+    res.json(user)
+  } catch (error) {
+    res.status(400).json(error)
+  }
 })
 
 // Get Registered Users
@@ -32,7 +39,7 @@ router.get('/register', async (req, res) => {
         const users = await User.find()
         res.status(201).json(users)
     } catch (error) {
-        res.status(500).json({ error: 'Unable to get users' })
+        res.status(400).json({ error: 'Unable to get users' })
     }
 })
 
@@ -58,9 +65,22 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ error: 'Invalid credentials' })
         }
         const token = jwt.sign({ userId: user._id }, SECRET_KEY)
-        res.json({ message: 'Login successful' })
+        res.json({ message: 'Login successful', userId: user._id })
     } catch (error) {
         res.status(500).json({ error: 'Error logging in' })
+    }
+})
+
+// User Create Route
+router.post("/register", async (req, res) => {
+    try {
+      const { username, password } = req.body   
+      const hashedPassword = await bcrypt.hash(password, 10)
+      const newUser = new User({username, password: hashedPassword })
+      await newUser.save()
+      res.status(201).json({ message: 'User Created Successfully' })
+    } catch (error) {
+        res.status(500).json({ error: 'Error Signing Up' })
     }
 })
 
