@@ -10,7 +10,6 @@ const mongoose = require("mongoose")
 const cors = require('cors')
 const morgan = require('morgan')
 
-
 mongoose.connect(DATABASE_URL)
 
 mongoose.connection
