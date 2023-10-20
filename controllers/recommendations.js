@@ -15,10 +15,37 @@ router.get("/", async (req, res) => {
     }
 })
 
-// Recommendation CREATE ROUTE 
-router.post("/", async (req, res) => {
+// Recommendation Show Route 
+router.get("/:id", async (req, res) => {
     try {
-        res.json(await Recommendation.create(req.body))
+      const recommendation = await Recommendation.findById(req.params.id)
+      res.json(recommendation)
+    } catch (error) {
+      res.status(400).json(error)
+    }
+  })
+
+// Recommendation CREATE ROUTE 
+router.post("/:collectionId/add", async (req, res) => {
+    const collectionId = req.params.collectionId
+
+    console.log("Received request to create recommendation for collection:", collectionId)
+    console.log("Request body:", req.body)
+    try {
+        const newRecommendation = await Recommendation.create({
+            ...req.body,
+            collection_id: collectionId
+        })
+
+        const collection = await Collection.findById(collectionId)
+        console.log(collection)
+        collection.recommendation.push(newRecommendation)
+        await collection.save()
+        
+        console.log("New collection created:", newRecommendation)
+        console.log("Updated collection:", collection)
+
+        res.json(newRecommendation)
     } catch (error) {
         res.status(400).json(error)
     }
