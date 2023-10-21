@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
 // Recommendation Show Route 
 router.get("/:id", async (req, res) => {
     try {
-      const recommendation = await Recommendation.findById(req.params.id)
+      const recommendation = await Recommendation.findById(req.params.id).populate("user")
       res.json(recommendation)
     } catch (error) {
       res.status(400).json(error)

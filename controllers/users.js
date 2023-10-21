@@ -26,7 +26,9 @@ router.get("/", async (req, res) => {
 //USER Show Route
 router.get("/:id", async (req, res) => {
   try {
-    const user = await User.findById(req.params.id).populate("collectionsName")
+    const user = await User.findById(req.params.id)
+    .populate("collectionsName")
+    
     res.json(user)
   } catch (error) {
     res.status(400).json(error)

@@ -17,6 +17,12 @@ const userSchema = new mongoose.Schema({
             type: mongoose.Types.ObjectId,
             ref: "Collection"
         }
+    ],
+    recommendation: [
+        {
+            type: mongoose.Types.ObjectId,
+            ref: "Recommendation"
+        }
     ]
 })
 

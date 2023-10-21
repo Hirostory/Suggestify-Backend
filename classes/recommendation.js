@@ -5,6 +5,10 @@ const recommendationSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "Collection"
     },
+    user: {
+        type: mongoose.Types.ObjectId,
+        ref: "User"
+    },
     title: {
         type: String,
         required: true 
