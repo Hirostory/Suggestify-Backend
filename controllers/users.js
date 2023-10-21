@@ -28,6 +28,7 @@ router.get("/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id)
     .populate("collectionsName")
+    .populate("recommendations")
     
     res.json(user)
   } catch (error) {

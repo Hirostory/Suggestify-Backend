@@ -34,13 +34,17 @@ router.post("/:collectionId/add", async (req, res) => {
     try {
         const newRecommendation = await Recommendation.create({
             ...req.body,
-            collection_id: collectionId
+            collectionsName: collectionId
         })
 
         const collection = await Collection.findById(collectionId)
         console.log(collection)
         collection.recommendation.push(newRecommendation)
         await collection.save()
+
+        const user = await User.findOne({ _id: collection.user_id})
+        user.recommendation.push(newRecommendation)
+        await user.save()
         
         console.log("New collection created:", newRecommendation)
         console.log("Updated collection:", collection)

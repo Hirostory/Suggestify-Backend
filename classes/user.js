@@ -15,7 +15,13 @@ const userSchema = new mongoose.Schema({
     collectionsName: [
         {
             type: mongoose.Types.ObjectId,
-            ref: "Collection"
+            ref: "Collection",
+            recommendation: [
+                {
+                    type: mongoose.Types.ObjectId,
+                    ref: "Recommendation"
+                }
+            ]
         }
     ],
     recommendation: [
