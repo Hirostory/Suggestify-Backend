@@ -34,7 +34,7 @@ router.post("/:userId/add", async (req, res) => {
     try {
         const newCollection = await Collection.create({
             ...req.body,
-            user_id: userId
+            user: userId
         })
 
         const user = await User.findById(userId)

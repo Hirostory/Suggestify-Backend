@@ -28,13 +28,13 @@ router.get("/:id", async (req, res) => {
 // Recommendation CREATE ROUTE 
 router.post("/:collectionId/add", async (req, res) => {
     const collectionId = req.params.collectionId
-
+    console.log("this is the collectionId", collectionId)
     console.log("Received request to create recommendation for collection:", collectionId)
     console.log("Request body:", req.body)
     try {
         const newRecommendation = await Recommendation.create({
             ...req.body,
-            collectionsName: collectionId
+            collectionName: collectionId
         })
 
         const collection = await Collection.findById(collectionId)
@@ -42,12 +42,14 @@ router.post("/:collectionId/add", async (req, res) => {
         collection.recommendation.push(newRecommendation)
         await collection.save()
 
-        const user = await User.findOne({ _id: collection.user_id})
+        const user = await User.findById(collection.user)
+        console.log("this is user", user)
         user.recommendation.push(newRecommendation)
         await user.save()
         
         console.log("New collection created:", newRecommendation)
         console.log("Updated collection:", collection)
+        console.log("updated user: ", user)
 
         res.json(newRecommendation)
     } catch (error) {
