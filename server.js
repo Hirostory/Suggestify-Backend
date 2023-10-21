@@ -1,6 +1,6 @@
 require("dotenv").config()
 // pull PORT from .env, give default value of 4000
-const { DATABASE_URL, PORT = 3000 } = process.env || 3000;
+const { DATABASE_URL, PORT = 4000 } = process.env || 4000;
 // import express
 const express = require("express");
 // create application object
