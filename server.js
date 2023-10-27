@@ -32,7 +32,7 @@ app.use('/collection', collectionController)
 app.use('/recommendation', recommendationController)
 
 app.get("/", (req,res)=>{
-    res.send("YAY!")
+    res.redirect("/user")
 })
 
 app.listen(PORT, console.log(`Server is listening on http://localhost:${PORT}`))
